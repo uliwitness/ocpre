@@ -82,7 +82,7 @@
 					if (escapedCh == '(') {
 						int bracketCount = 1;
 						[formatString appendFormat: @"%%%d$@", ++argPosition];
-						[formatArgsString appendString: @", ^{ return "];
+						[formatArgsString appendString: @", ("];
 						
 						BOOL interpolatedSectionDone = NO;
 						while (!scanner.isAtEnd && !interpolatedSectionDone) {	// Loop over brackets to balance the ones in code & find our end indicator.
@@ -113,7 +113,7 @@
 								}
 							}
 						}
-						[formatArgsString appendString: @"; }()"];
+						[formatArgsString appendString: @")"];
 					} else {
 						[formatString appendFormat: @"\\%C", escapedCh];
 					}
