@@ -13,7 +13,7 @@
 
 +(NSString*) syntaxForExecutablePath: (NSString*)inPath
 {
-	return [NSString stringWithFormat: @"%@ <fileName>\nPreprocess the given file.", inPath];
+	return [NSString stringWithFormat: @"%@ [--generate-localized-strings 1] <fileName>\nPreprocess the given file.\n\t--generate-localized-strings\tSpecify this option to have a .strings file generated to hold the format strings.", inPath];
 }
 
 -(BOOL) openFile: (NSString*)filePath
@@ -25,6 +25,10 @@
 		return NO;
 	}
 	
+	BOOL generateLocalizedStrings = [[NSUserDefaults standardUserDefaults] boolForKey: @"-generate-localized-strings"];
+	
+	NSMutableString * processedFileStr = [NSMutableString string];
+	NSMutableString * localizedFileStr = [NSMutableString string];
 	NSCharacterSet * stringEndChars = [NSCharacterSet characterSetWithCharactersInString: @"\\\""];
 	NSCharacterSet * bracketChars = [NSCharacterSet characterSetWithCharactersInString: @"()"];
 	NSScanner * scanner = [NSScanner scannerWithString: fileStr];
@@ -36,11 +40,14 @@
 		if (!partBefore) {
 			partBefore = @"";
 		}
-		printf("%s", partBefore.UTF8String);
+		[processedFileStr appendString: partBefore];
 		if (scanner.atEnd)
 			break;
 		[scanner scanString: @"@\"" intoString: nil];
-		NSMutableString * formatString = [NSMutableString stringWithString: @"@\""];
+		NSMutableString * formatString = [NSMutableString string];
+		if (!generateLocalizedStrings) {
+			[formatString appendString: @"@\""];
+		}
 		NSMutableString * formatArgsString = [NSMutableString string];
 		BOOL stringEnded = NO;
 		while (!scanner.atEnd && !stringEnded) {	// Search for escape sequences/their ends:
@@ -63,7 +70,9 @@
 					[formatString appendString: @"\\\""];
 					endChar = [endChar substringFromIndex: 2];
 				} else if ([endChar hasPrefix: @"\""]) { // String-ending quote.
-					[formatString appendString: @"\""];
+					if (!generateLocalizedStrings) {
+						[formatString appendString: @"\""];
+					}
 					stringEnded = YES;
 					break;	// TODO: Doesn't correctly handle strings like "foo""bar" without a space between them.
 				} else if ([endChar isEqualToString: @"\\"] && !scanner.atEnd) { // Some other escape sequence, possibly "\(".
@@ -76,7 +85,7 @@
 						[formatArgsString appendString: @", ^{ return "];
 						
 						BOOL interpolatedSectionDone = NO;
-						while (!scanner.isAtEnd && !interpolatedSectionDone) {
+						while (!scanner.isAtEnd && !interpolatedSectionDone) {	// Loop over brackets to balance the ones in code & find our end indicator.
 							NSString * exprPart = nil;
 							[scanner scanUpToCharactersFromSet: bracketChars intoString: &exprPart];
 							[formatArgsString appendString: exprPart];
@@ -85,6 +94,7 @@
 							[scanner scanCharactersFromSet: bracketChars intoString: &bracketString];
 							if (!bracketString) bracketString = @"";
 							
+							// Again, may get several brackets from scanner, but may also get brackets as part of text *after* our interpolation:
 							for (NSInteger x = 0; x < bracketString.length && !interpolatedSectionDone; x++) {
 								switch ([bracketString characterAtIndex: x]) {
 									case '(':
@@ -113,7 +123,25 @@
 				}
 			}
 		}
-		printf( "%s%s", formatString.UTF8String, formatArgsString.UTF8String );
+		if (generateLocalizedStrings && formatArgsString.length > 0) {
+			NSString * fnameKey = [[filePath lastPathComponent] stringByDeletingPathExtension];
+			NSString * locKey = [NSString stringWithFormat: @"%@_%lx", [fnameKey uppercaseString], (long)formatString.hash];
+			[processedFileStr appendFormat: @"NSLocalizedStringFromTable(@\"%1$@\",@\"%2$@\",@\"%3$@\")%4$@", locKey, fnameKey, formatString, formatArgsString];
+			[localizedFileStr appendFormat: @"\"%@\" = \"%@\";\n", locKey, formatString];
+		} else {
+			[processedFileStr appendFormat: @"%@%@", formatString, formatArgsString];
+		}
+	}
+	
+	NSString * processedPath = [[filePath stringByDeletingPathExtension] stringByAppendingFormat: @".processed.%@", filePath.pathExtension];
+	if (![processedFileStr writeToFile: processedPath atomically: YES encoding: NSUTF8StringEncoding error: &err]) {
+		NSLog(@"Error writing processed file: %@", err);
+	}
+	if (generateLocalizedStrings && localizedFileStr.length > 0) {
+		NSString * localizedPath = [[filePath stringByDeletingPathExtension] stringByAppendingPathExtension: @"strings"];
+		if (![localizedFileStr writeToFile: localizedPath atomically: YES encoding: NSUTF8StringEncoding error: &err]) {
+			NSLog(@"Error writing strings file: %@", err);
+		}
 	}
 	
 	return YES;
