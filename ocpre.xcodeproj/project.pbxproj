@@ -34,6 +34,7 @@
 		555C8A4E1F28607000567282 /* OCPREApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPREApplication.h; sourceTree = "<group>"; };
 		555C8A4F1F28607000567282 /* OCPREApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPREApplication.m; sourceTree = "<group>"; };
 		555C8A511F2867BC00567282 /* testfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testfile.m; sourceTree = "<group>"; };
+		555C8A541F28EB7200567282 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,7 +51,10 @@
 		555C8A331F285BFD00567282 = {
 			isa = PBXGroup;
 			children = (
+				555C8A541F28EB7200567282 /* README.md */,
+				555C8A511F2867BC00567282 /* testfile.m */,
 				555C8A3E1F285BFD00567282 /* ocpre */,
+				555C8A551F28EB8100567282 /* Support Files */,
 				555C8A3D1F285BFD00567282 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,13 +70,20 @@
 		555C8A3E1F285BFD00567282 /* ocpre */ = {
 			isa = PBXGroup;
 			children = (
-				555C8A511F2867BC00567282 /* testfile.m */,
 				555C8A4E1F28607000567282 /* OCPREApplication.h */,
 				555C8A4F1F28607000567282 /* OCPREApplication.m */,
+			);
+			path = ocpre;
+			sourceTree = "<group>";
+		};
+		555C8A551F28EB8100567282 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
 				555C8A4C1F285FDF00567282 /* ULICommandLineApplication.h */,
 				555C8A4B1F285FDF00567282 /* ULICommandLineApplication.m */,
 				555C8A3F1F285BFD00567282 /* main.m */,
 			);
+			name = "Support Files";
 			path = ocpre;
 			sourceTree = "<group>";
 		};
