@@ -30,6 +30,7 @@
 	NSScanner * scanner = [NSScanner scannerWithString: fileStr];
 	scanner.charactersToBeSkipped = nil;
 	while (!scanner.atEnd) {	// Search for string literals:
+		int argPosition = 0;
 		NSString * partBefore = nil;
 		[scanner scanUpToString: @"@\"" intoString: &partBefore];
 		if (!partBefore) {
@@ -71,7 +72,7 @@
 					scanner.scanLocation = scanner.scanLocation +1;
 					if (escapedCh == '(') {
 						int bracketCount = 1;
-						[formatString appendString: @"%@"];
+						[formatString appendFormat: @"%%%d$@", ++argPosition];
 						[formatArgsString appendString: @", ^{ return "];
 						
 						BOOL interpolatedSectionDone = NO;
