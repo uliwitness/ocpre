@@ -8,23 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		555C8A401F285BFD00567282 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 555C8A3F1F285BFD00567282 /* main.m */; };
+		555C8A4D1F285FDF00567282 /* ULICommandLineApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 555C8A4B1F285FDF00567282 /* ULICommandLineApplication.m */; };
+		555C8A501F28607000567282 /* OCPREApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 555C8A4F1F28607000567282 /* OCPREApplication.m */; };
+		555C8A531F286C6000567282 /* testfile.m in CopyFiles */ = {isa = PBXBuildFile; fileRef = 555C8A511F2867BC00567282 /* testfile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		555C8A3A1F285BFD00567282 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				555C8A531F286C6000567282 /* testfile.m in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		555C8A3C1F285BFD00567282 /* ocpre */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ocpre; sourceTree = BUILT_PRODUCTS_DIR; };
 		555C8A3F1F285BFD00567282 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		555C8A4B1F285FDF00567282 /* ULICommandLineApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ULICommandLineApplication.m; sourceTree = "<group>"; };
+		555C8A4C1F285FDF00567282 /* ULICommandLineApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ULICommandLineApplication.h; sourceTree = "<group>"; };
+		555C8A4E1F28607000567282 /* OCPREApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCPREApplication.h; sourceTree = "<group>"; };
+		555C8A4F1F28607000567282 /* OCPREApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCPREApplication.m; sourceTree = "<group>"; };
+		555C8A511F2867BC00567282 /* testfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testfile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +66,11 @@
 		555C8A3E1F285BFD00567282 /* ocpre */ = {
 			isa = PBXGroup;
 			children = (
+				555C8A511F2867BC00567282 /* testfile.m */,
+				555C8A4E1F28607000567282 /* OCPREApplication.h */,
+				555C8A4F1F28607000567282 /* OCPREApplication.m */,
+				555C8A4C1F285FDF00567282 /* ULICommandLineApplication.h */,
+				555C8A4B1F285FDF00567282 /* ULICommandLineApplication.m */,
 				555C8A3F1F285BFD00567282 /* main.m */,
 			);
 			path = ocpre;
@@ -120,7 +134,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				555C8A501F28607000567282 /* OCPREApplication.m in Sources */,
 				555C8A401F285BFD00567282 /* main.m in Sources */,
+				555C8A4D1F285FDF00567282 /* ULICommandLineApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
